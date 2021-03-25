@@ -1,32 +1,40 @@
-/* yes - a small clone of GNU coreutils yes, repeatedly prints a string */
+/* a minimal version of yes */
 /* Written by Kieran Houtgraaf <kieran.houtgraaf@gmail.com> */
 /* Full license to be found in LICENSE */
 
 #include <string.h>
-#include <stdio.h>
 
-int
-main(int argc, char *argv[]) {
-	char	*toPrint;
+int sys_write(unsigned int fd, char const *buf, size_t cnt);
+int stlen(char* msg){
+	int len = 0;
+	while(*msg++)
+		len++;
+	return len;
+}
+
+#define PRINT(msg) sys_write(2, msg, stlen(msg))
+
+static char* help = "Usage: yes [STRING]\n"
+					"Repeatedly prints 'y' or STRING\n"
+					"Git repo: <https://github.com/drumfreakk/yes>\n";
+
+int main(int argc, char *argv[]) {
+	char *toPrint;
 
 	if (argc >= 2){
 		toPrint = argv[1];
-
-		if (!strncmp(toPrint, "-", 1)){
-			if (!strcmp(toPrint, "--help"))
-				printf("Usage: %s \"[STRING]...\"\n  or:  %s OPTION\nRepeatedly output a line with all specified STRING(s), or 'y'.\n\n      --help     display this help and exit\n      --version  output version information and exit\n\nSource code available at: <https://github.com/drumfreakk/yes>\n", argv[0], argv[0]);
-			else if (!strcmp(toPrint, "--version"))
-				printf("yes 1.0\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by the law.\nThe full license can be found in LICENSE\n\nWritten by Kieran Houtgraaf.\n");
-			else
-				printf("%s: invalid option -- '%s'\nTry '%s --help' for more information.\n", argv[0], toPrint, argv[0]);
+		
+		if (toPrint[0] == '-' && toPrint[1] == 'h' && toPrint[2] == 0){
+			PRINT(help);
 			return 0;
 		}
 	} else 
 		toPrint = "y";
 	
-	while(1)
-		printf("%s\n", toPrint);
-	
+	while(1){
+		PRINT(toPrint);
+		PRINT("\n");
+	}
 
 	return 0;
 }

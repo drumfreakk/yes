@@ -1,15 +1,10 @@
-MAIN := yes
-INSTALL_PREFIX := /usr/bin
-
-all: $(MAIN)
-
-$(MAIN):
-	$(CC) $(MAIN).c -o $(MAIN)
+all: boot.s yes.c
+	gcc -nostartfiles -static -Os -nodefaultlibs -nostdlib -s -o $@ $^ -flto -Wall -Wextra -Wpedantic -Wshadow -Qn -std=c18 -fno-stack-protector -fno-asynchronous-unwind-tables -Wl,-n,-gc-sections,-build-id=none -T x86_64.ld
 
 .PHONY: clean install
-install: $(MAIN)
-	install -Dm755 $(MAIN) $(INSTALL_PREFIX)/$(MAIN)
+install: all
+	install -Dm755 yes /usr/bin/yes
 
 clean:
-	$(RM) $(MAIN)
+	$(RM) yes
 
