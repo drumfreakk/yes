@@ -12,7 +12,7 @@ long unsigned int strlen(const char* msg){
 
 #define PRINT(msg) sys_write(2, msg, strlen(msg))
 
-static char* help = "Usage: yes [STRING]\n"
+static char* help = "Usage: yes [-h | STRING]\n"
 					"Repeatedly prints 'y' or STRING\n"
 					"Git repo: <https://github.com/drumfreakk/yes>\n";
 
