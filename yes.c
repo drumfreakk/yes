@@ -1,18 +1,16 @@
 /* a minimal version of yes */
 /* Written by Kieran Houtgraaf <kieran.houtgraaf@gmail.com> */
-/* Full license to be found in LICENSE */
+/* Full license can be found in LICENSE */
 
-#include <string.h>
-
-int sys_write(unsigned int fd, char const *buf, size_t cnt);
-int stlen(char* msg){
+int sys_write(unsigned int fd, char const *buf, int cnt);
+long unsigned int strlen(const char* msg){
 	int len = 0;
 	while(*msg++)
 		len++;
 	return len;
 }
 
-#define PRINT(msg) sys_write(2, msg, stlen(msg))
+#define PRINT(msg) sys_write(2, msg, strlen(msg))
 
 static char* help = "Usage: yes [STRING]\n"
 					"Repeatedly prints 'y' or STRING\n"
